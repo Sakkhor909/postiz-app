@@ -156,6 +156,7 @@ export const useMenuItem = () => {
       ),
       path: '/third-party',
     },
+    require('@gitroom/frontend/components/comments/comments.menu').commentsMenuItem,
   ] satisfies MenuItemInterface[] as MenuItemInterface[];
 
   const secondMenu = [
