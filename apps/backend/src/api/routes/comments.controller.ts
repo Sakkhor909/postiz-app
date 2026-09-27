@@ -20,6 +20,15 @@ export class CommentsController {
     return this._commentsService.getComments(platform);
   }
 
+  @Get('/history')
+  async getHistory(
+    @Query('platform') platform: string = 'fb',
+    @Query('page') page?: string,
+    @Query('pageSize') pageSize?: string
+  ) {
+    return this._commentsService.getHistory(platform, page, pageSize);
+  }
+
   @Post('/reply')
   async reply(
     @Body() body: { platform: string; id: string; text: string }

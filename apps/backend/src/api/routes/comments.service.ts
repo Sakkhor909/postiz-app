@@ -6,6 +6,21 @@ import * as fs from 'fs';
 const ALLOWED_PLATFORMS = ['fb', 'ig', 'threads'] as const;
 export type Platform = (typeof ALLOWED_PLATFORMS)[number];
 
+export interface CommentHistoryRow {
+  comment_id: string;
+  post_id?: string;
+  media_id?: string;
+  post_snippet?: string;
+  post_time?: string;
+  post_url?: string;
+  comment_created?: string;
+  author: string;
+  author_id?: string;
+  message: string;
+  reply_count?: number;
+  platform?: string;
+}
+
 @Injectable()
 export class CommentsService {
   private get engineDir(): string {
@@ -32,7 +47,11 @@ export class CommentsService {
     return path.join(this.stateDir, `${platform}-comments-pending.json`);
   }
 
-  runEngine(platform: Platform, command: string, args: string[] = []): Promise<any> {
+  getHistoryFilePath(platform: Platform): string {
+    return path.join(this.stateDir, `${platform}-comments-history.json`);
+  }
+
+  runEngine(platform: Platform, command: string, args: string[] = []): Promise<Record<string, unknown>> {
     const scriptPath = this.getEngineScriptPath(platform);
     return new Promise((resolve, reject) => {
       execFile(
@@ -72,9 +91,10 @@ export class CommentsService {
     // Run poll command first for fresh data
     try {
       await this.runEngine(platform, 'poll');
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as Error;
       // If poll fails, log and proceed to check pending file
-      console.error(`[CommentsService] Error polling platform ${platform}:`, err?.message || err);
+      console.error(`[CommentsService] Error polling platform ${platform}:`, error?.message || err);
     }
 
     // Read platform pending JSON file verbatim
@@ -86,11 +106,88 @@ export class CommentsService {
     try {
       const content = await fs.promises.readFile(pendingFile, 'utf-8');
       return JSON.parse(content);
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as Error;
       throw new InternalServerErrorException(
-        `Failed to read pending comments file: ${err.message}`
+        `Failed to read pending comments file: ${error?.message || err}`
       );
     }
+  }
+
+  async getHistory(
+    platformParam: string = 'fb',
+    pageParam?: string,
+    pageSizeParam?: string
+  ) {
+    this.validatePlatform(platformParam);
+    const platform = platformParam as Platform;
+
+    const historyFile = this.getHistoryFilePath(platform);
+    let rawContent: string;
+    try {
+      rawContent = await fs.promises.readFile(historyFile, 'utf-8');
+    } catch (err: unknown) {
+      const error = err as NodeJS.ErrnoException;
+      if (error?.code === 'ENOENT') {
+        return {
+          generated_at: null,
+          generatedAt: null,
+          count: 0,
+          total: 0,
+          page: 1,
+          pageSize: 50,
+          comments: [],
+        };
+      }
+      throw new InternalServerErrorException(
+        `Failed to read comments history file: ${error?.message || err}`
+      );
+    }
+
+    let parsed: { generated_at?: string; comments?: CommentHistoryRow[] } | null = null;
+    try {
+      parsed = JSON.parse(rawContent);
+    } catch {
+      return {
+        generated_at: null,
+        generatedAt: null,
+        count: 0,
+        total: 0,
+        page: 1,
+        pageSize: 50,
+        comments: [],
+      };
+    }
+
+    const allComments: CommentHistoryRow[] = (Array.isArray(parsed?.comments) ? parsed.comments : []).slice();
+    allComments.sort((a, b) => {
+      const timeA = a?.comment_created ? new Date(a.comment_created).getTime() : 0;
+      const timeB = b?.comment_created ? new Date(b.comment_created).getTime() : 0;
+      return (isNaN(timeB) ? 0 : timeB) - (isNaN(timeA) ? 0 : timeA);
+    });
+
+    const hasPaging = pageParam !== undefined || pageSizeParam !== undefined;
+    const page = Math.max(1, parseInt(pageParam || '1', 10) || 1);
+    const pageSize = hasPaging
+      ? Math.max(1, parseInt(pageSizeParam || '50', 10) || 50)
+      : allComments.length;
+    const total = allComments.length;
+    const startIndex = (page - 1) * pageSize;
+    const paginatedComments = hasPaging
+      ? allComments.slice(startIndex, startIndex + pageSize)
+      : allComments;
+
+    const generatedAt = parsed?.generated_at ?? null;
+
+    return {
+      generated_at: generatedAt,
+      generatedAt,
+      count: total,
+      total,
+      page: hasPaging ? page : 1,
+      pageSize: hasPaging ? pageSize : 50,
+      comments: paginatedComments,
+    };
   }
 
   async reply(platformParam: string, id: string, text: string) {
