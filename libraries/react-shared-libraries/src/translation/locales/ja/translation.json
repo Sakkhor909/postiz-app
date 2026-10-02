@@ -642,6 +642,10 @@
   "channel_id_copied": "チャンネルIDがクリップボードにコピーされました",
   "settings_updated": "設定が更新されました",
   "customer_updated": "顧客情報が更新されました",
+  "edit_group_name": "グループ名を編集",
+  "group_name": "名前",
+  "group_updated": "グループが更新されました",
+  "could_not_save_group": "グループを保存できませんでした。",
   "custom_url": "カスタムURL",
   "picture": "画像",
   "upgrade_required": "この機能を利用するにはアップグレードが必要です",
@@ -682,6 +686,7 @@
   "repeat_post_every_label": "投稿を繰り返す間隔",
   "add_new_tag": "新しいタグを追加",
   "tag_name": "名前",
+  "post_save_failed": "投稿を保存できませんでした",
   "post_is_too_long": "投稿が長すぎます。修正してください",
   "your_post_should_have_at_least_one_character_or_one_image": "投稿には少なくとも1文字または1枚の画像が必要です。",
   "internal_edit": "内部編集",
@@ -785,5 +790,6 @@
   "preview_comment_failed": "コメントの投稿に失敗しました",
   "preview_comment_detach_hint": "選択テキストへのコメントは、テキストが後から編集されるとハイライトが失われます。",
   "preview_comment_text_changed": "テキストが変更されました",
-  "preview_no_comments_yet": "まだコメントはありません。投稿内のテキストを選択してコメントするか、一般的なコメントを追加してください。"
+  "preview_no_comments_yet": "まだコメントはありません。投稿内のテキストを選択してコメントするか、一般的なコメントを追加してください。",
+  "some_files_failed_to_upload": "いくつかのファイルのアップロードに失敗しました。もう一度お試しください。"
 }

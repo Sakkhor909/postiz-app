@@ -642,6 +642,10 @@
   "channel_id_copied": "Kanal-ID in die Zwischenablage kopiert",
   "settings_updated": "Einstellungen aktualisiert",
   "customer_updated": "Kunde aktualisiert",
+  "edit_group_name": "Gruppennamen bearbeiten",
+  "group_name": "Name",
+  "group_updated": "Gruppe aktualisiert",
+  "could_not_save_group": "Die Gruppe konnte nicht gespeichert werden.",
   "custom_url": "Benutzerdefinierte URL",
   "picture": "Bild",
   "upgrade_required": "Sie müssen ein Upgrade durchführen, um diese Funktion zu nutzen",
@@ -682,6 +686,7 @@
   "repeat_post_every_label": "Beitrag wiederholen alle",
   "add_new_tag": "Neues Schlagwort hinzufügen",
   "tag_name": "Name",
+  "post_save_failed": "Der Beitrag konnte nicht gespeichert werden",
   "post_is_too_long": "Beitrag ist zu lang, bitte korrigieren",
   "your_post_should_have_at_least_one_character_or_one_image": "Dein Beitrag sollte mindestens ein Zeichen oder ein Bild enthalten.",
   "internal_edit": "Interne Bearbeitung",
@@ -785,5 +790,6 @@
   "preview_comment_failed": "Kommentar konnte nicht veröffentlicht werden",
   "preview_comment_detach_hint": "Kommentare zu ausgewähltem Text verlieren ihre Markierung, wenn der Text später bearbeitet wird.",
   "preview_comment_text_changed": "Text geändert",
-  "preview_no_comments_yet": "Noch keine Kommentare. Wählen Sie einen Text im Beitrag aus, um ihn zu kommentieren, oder fügen Sie einen allgemeinen Kommentar hinzu."
+  "preview_no_comments_yet": "Noch keine Kommentare. Wählen Sie einen Text im Beitrag aus, um ihn zu kommentieren, oder fügen Sie einen allgemeinen Kommentar hinzu.",
+  "some_files_failed_to_upload": "Einige Dateien konnten nicht hochgeladen werden. Bitte versuchen Sie es erneut."
 }

@@ -642,6 +642,10 @@
   "channel_id_copied": "채널 ID가 클립보드에 복사되었습니다",
   "settings_updated": "설정이 업데이트되었습니다",
   "customer_updated": "고객 정보가 업데이트되었습니다",
+  "edit_group_name": "그룹 이름 수정",
+  "group_name": "이름",
+  "group_updated": "그룹이 업데이트되었습니다",
+  "could_not_save_group": "그룹을 저장할 수 없습니다.",
   "custom_url": "맞춤 URL",
   "picture": "사진",
   "upgrade_required": "이 기능을 사용하려면 업그레이드가 필요합니다",
@@ -682,6 +686,7 @@
   "repeat_post_every_label": "게시 반복 주기",
   "add_new_tag": "새 태그 추가",
   "tag_name": "이름",
+  "post_save_failed": "게시물을 저장할 수 없습니다",
   "post_is_too_long": "게시글이 너무 깁니다. 수정해 주세요.",
   "your_post_should_have_at_least_one_character_or_one_image": "게시물에는 최소한 한 글자 또는 한 이미지를 포함해야 합니다.",
   "internal_edit": "내부 편집",
@@ -785,5 +790,6 @@
   "preview_comment_failed": "댓글을 게시할 수 없습니다.",
   "preview_comment_detach_hint": "선택한 텍스트에 단 댓글은, 텍스트가 나중에 수정되면 강조가 사라집니다.",
   "preview_comment_text_changed": "텍스트가 변경됨",
-  "preview_no_comments_yet": "아직 댓글이 없습니다. 게시물에서 텍스트를 선택해 댓글을 남기거나, 일반 댓글을 추가하세요."
+  "preview_no_comments_yet": "아직 댓글이 없습니다. 게시물에서 텍스트를 선택해 댓글을 남기거나, 일반 댓글을 추가하세요.",
+  "some_files_failed_to_upload": "일부 파일을 업로드하지 못했습니다. 다시 시도해 주세요."
 }

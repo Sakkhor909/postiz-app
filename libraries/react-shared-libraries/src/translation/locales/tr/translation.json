@@ -642,6 +642,10 @@
   "channel_id_copied": "Kanal kimliği panoya kopyalandı",
   "settings_updated": "Ayarlar Güncellendi",
   "customer_updated": "Müşteri Güncellendi",
+  "edit_group_name": "Grup adını düzenle",
+  "group_name": "Ad",
+  "group_updated": "Grup güncellendi",
+  "could_not_save_group": "Grup kaydedilemedi.",
   "custom_url": "Özel URL",
   "picture": "Resim",
   "upgrade_required": "Bu özelliği kullanmak için yükseltme yapmanız gerekiyor",
@@ -682,6 +686,7 @@
   "repeat_post_every_label": "Gönderiyi Her Tekrarla",
   "add_new_tag": "Yeni Etiket Ekle",
   "tag_name": "Adı",
+  "post_save_failed": "Gönderi kaydedilemedi",
   "post_is_too_long": "gönderi çok uzun, lütfen düzeltin",
   "your_post_should_have_at_least_one_character_or_one_image": "Gönderinizde en az bir karakter veya bir görsel olmalıdır.",
   "internal_edit": "Dahili Düzenleme",
@@ -785,5 +790,6 @@
   "preview_comment_failed": "Yorum paylaşılırken bir hata oluştu",
   "preview_comment_detach_hint": "Seçili metindeki yorumlar, metin daha sonra değiştirilirse vurgusunu kaybeder.",
   "preview_comment_text_changed": "Metin değişti",
-  "preview_no_comments_yet": "Henüz yorum yok. Yorum yapmak için gönderide bir metin seçin veya genel bir yorum ekleyin."
+  "preview_no_comments_yet": "Henüz yorum yok. Yorum yapmak için gönderide bir metin seçin veya genel bir yorum ekleyin.",
+  "some_files_failed_to_upload": "Bazı dosyalar yüklenemedi, lütfen tekrar deneyin"
 }
