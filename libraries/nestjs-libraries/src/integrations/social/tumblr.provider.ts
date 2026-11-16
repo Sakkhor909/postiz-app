@@ -347,8 +347,10 @@ export class TumblrProvider extends SocialAbstract implements SocialProvider {
   async reConnect(
     id: string,
     requiredId: string,
-    accessToken: string
-  ): Promise<Omit<AuthTokenDetails, 'refreshToken' | 'expiresIn'>> {
+    accessToken: string,
+    refreshToken?: string,
+    expiresIn?: number
+  ): Promise<AuthTokenDetails> {
     const information = await this.fetchPageInformation(accessToken, {
       id: requiredId,
     });
@@ -359,6 +361,8 @@ export class TumblrProvider extends SocialAbstract implements SocialProvider {
       accessToken: information.access_token,
       picture: information.picture,
       username: information.username,
+      ...(refreshToken ? { refreshToken } : {}),
+      ...(expiresIn !== undefined ? { expiresIn } : {}),
     };
   }
 

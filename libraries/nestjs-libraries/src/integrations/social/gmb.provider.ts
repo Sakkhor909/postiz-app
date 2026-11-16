@@ -382,8 +382,10 @@ export class GmbProvider extends SocialAbstract implements SocialProvider {
   async reConnect(
     id: string,
     requiredId: string,
-    accessToken: string
-  ): Promise<Omit<AuthTokenDetails, 'refreshToken' | 'expiresIn'>> {
+    accessToken: string,
+    refreshToken?: string,
+    expiresIn?: number
+  ): Promise<AuthTokenDetails> {
     const pages = await this.pages(accessToken);
     const findPage = pages.find((p) => p.id === requiredId);
 
@@ -403,6 +405,8 @@ export class GmbProvider extends SocialAbstract implements SocialProvider {
       accessToken: information.access_token,
       picture: information.picture,
       username: information.username,
+      ...(refreshToken ? { refreshToken } : {}),
+      ...(expiresIn !== undefined ? { expiresIn } : {}),
     };
   }
 

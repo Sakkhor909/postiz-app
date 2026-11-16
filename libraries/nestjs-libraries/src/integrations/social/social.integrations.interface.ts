@@ -18,8 +18,10 @@ export interface IAuthenticator {
   reConnect?(
     id: string,
     requiredId: string,
-    accessToken: string
-  ): Promise<Omit<AuthTokenDetails, 'refreshToken' | 'expiresIn'>>;
+    accessToken: string,
+    refreshToken?: string,
+    expiresIn?: number
+  ): Promise<AuthTokenDetails>;
   generateAuthUrl(
     clientInformation?: ClientInformation
   ): Promise<GenerateAuthUrlResponse>;

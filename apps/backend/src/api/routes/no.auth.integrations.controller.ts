@@ -134,9 +134,15 @@ export class NoAuthIntegrationsController {
             const newAuth = await integrationProvider.reConnect(
               auth.id,
               refresh,
-              auth.accessToken
+              auth.accessToken,
+              auth.refreshToken,
+              auth.expiresIn
             );
-            return res({ ...newAuth, refreshToken: body.refresh });
+            return res({
+              ...newAuth,
+              refreshToken: newAuth.refreshToken ?? auth.refreshToken,
+              expiresIn: newAuth.expiresIn ?? auth.expiresIn,
+            });
           } catch (err: any) {
             return res({
               error: err.message,

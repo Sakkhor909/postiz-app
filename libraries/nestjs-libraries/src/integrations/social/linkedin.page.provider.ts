@@ -169,8 +169,10 @@ export class LinkedinPageProvider
   async reConnect(
     id: string,
     requiredId: string,
-    accessToken: string
-  ): Promise<Omit<AuthTokenDetails, 'refreshToken' | 'expiresIn'>> {
+    accessToken: string,
+    refreshToken?: string,
+    expiresIn?: number
+  ): Promise<AuthTokenDetails> {
     const information = await this.fetchPageInformation(accessToken, {
       page: requiredId,
     });
@@ -181,6 +183,8 @@ export class LinkedinPageProvider
       accessToken: information.access_token,
       picture: information.picture,
       username: information.username,
+      ...(refreshToken ? { refreshToken } : {}),
+      ...(expiresIn !== undefined ? { expiresIn } : {}),
     };
   }
 

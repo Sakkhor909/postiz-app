@@ -106,7 +106,9 @@ export class RefreshIntegrationService {
     const reConnect = await socialProvider.reConnect(
       integration.rootInternalId,
       integration.internalId,
-      refresh.accessToken
+      refresh.accessToken,
+      refresh.refreshToken,
+      refresh.expiresIn
     );
 
     return {
