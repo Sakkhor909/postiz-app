@@ -430,15 +430,46 @@ export class IntegrationService {
       org,
       String(getIntegrationInformation.id)
     );
-    await this._integrationRepository.updateIntegration(id, {
-      picture: getIntegrationInformation.picture,
-      internalId: String(getIntegrationInformation.id),
-      organizationId: org,
-      name: getIntegrationInformation.name,
-      inBetweenSteps: false,
-      token: getIntegrationInformation.access_token,
-      profile: getIntegrationInformation.username,
-    });
+
+    const freshRefreshToken = getIntegration.refreshToken;
+    const freshTokenExpiration = getIntegration.tokenExpiration;
+
+    const updatedIntegration = await this._integrationRepository.updateIntegration(
+      id,
+      {
+        picture: getIntegrationInformation.picture,
+        internalId: String(getIntegrationInformation.id),
+        organizationId: org,
+        name: getIntegrationInformation.name,
+        inBetweenSteps: false,
+        token: getIntegrationInformation.access_token,
+        profile: getIntegrationInformation.username,
+        // The two-step merge renames and soft-deletes this fresh row, so its
+        // credentials must be carried onto the surviving channel. Providers
+        // without a refresh token pass nothing and keep the survivor's value.
+        ...(freshRefreshToken ? { refreshToken: freshRefreshToken } : {}),
+        ...(freshRefreshToken && freshTokenExpiration
+          ? {
+              expiresIn: Math.max(
+                0,
+                Math.ceil(
+                  (freshTokenExpiration.getTime() - Date.now()) / 1000
+                )
+              ),
+            }
+          : {}),
+      }
+    );
+
+    // The merge may have moved the channel onto a pre-existing integration
+    // row, so the refresh workflow started on the fresh row id would exit
+    // immediately (deletedAt set). Restart it on the surviving id; providers
+    // without refreshCron no-op inside startRefreshWorkflow.
+    this._refreshIntegrationService
+      .startRefreshWorkflow(org, updatedIntegration.id, provider)
+      .catch((err) => {
+        console.log(err);
+      });
 
     return { success: true };
   }

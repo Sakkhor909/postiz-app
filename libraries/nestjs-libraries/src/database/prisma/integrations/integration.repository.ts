@@ -148,7 +148,10 @@ export class IntegrationRepository {
     });
   }
 
-  async updateIntegration(id: string, params: Partial<Integration>) {
+  async updateIntegration(
+    id: string,
+    params: Partial<Integration> & { expiresIn?: number }
+  ) {
     if (
       params.picture &&
       (params.picture.indexOf(process.env.CLOUDFLARE_BUCKET_URL!) === -1 ||
@@ -187,12 +190,25 @@ export class IntegrationRepository {
       });
     }
 
+    const { expiresIn, refreshToken, ...rest } = params;
+
     return this._integration.model.integration.update({
       where: {
         ...(existing ? { id: existing.id } : { id }),
       },
       data: {
-        ...params,
+        ...rest,
+        // The fresh row is renamed and soft-deleted above, so its credentials
+        // would be lost. Carry them onto the surviving channel: the fresh row
+        // is the OAuth result of this very connect, its refresh token is the
+        // one just issued. Only overwrite when the caller supplied them, so a
+        // provider without a refresh token keeps the survivor's own value.
+        ...(refreshToken !== null && refreshToken !== undefined
+          ? { refreshToken }
+          : {}),
+        ...(expiresIn !== undefined
+          ? { tokenExpiration: new Date(Date.now() + expiresIn * 1000) }
+          : {}),
         disabled: false,
         deletedAt: null,
       },
